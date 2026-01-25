@@ -5,3 +5,7 @@ VALUES (
     $1,
     $2
 );
+
+-- name: GetAllUsers :many
+SELECT username,ratings
+FROM users;

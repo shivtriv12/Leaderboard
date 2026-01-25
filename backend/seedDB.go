@@ -8,7 +8,7 @@ import (
 	"github.com/shivtriv12/Leaderboard/internal/database"
 )
 
-func seedDB(dbQueries database.Queries) {
+func seedDB(dbQueries *database.Queries) {
 	log.Print("started database seeding")
 
 	for i := range 10000 {

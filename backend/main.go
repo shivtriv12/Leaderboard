@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/shivtriv12/Leaderboard/internal/database"
+	"github.com/shivtriv12/Leaderboard/internal/redisClient"
 )
 
 func main() {
@@ -23,5 +24,11 @@ func main() {
 	}
 	dbQueries := database.New(db)
 
-	// seedDB(*dbQueries) ---------use this on first run to seed db----------
+	// seedDB(dbQueries) ---------use this on first run to seed db----------
+	redisClient.Init()
+	defer redisClient.Close()
+	err = buildRedis(dbQueries)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
