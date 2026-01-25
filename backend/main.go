@@ -11,14 +11,17 @@ import (
 )
 
 func main() {
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("error loading env")
+	}
 
 	dbURL := os.Getenv("DB_URL")
 	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
-		log.Fatal("error opening database")
+		log.Fatal("error opening postgres")
 	}
 	dbQueries := database.New(db)
 
-	seedDB(*dbQueries)
+	// seedDB(*dbQueries) ---------use this on first run to seed db----------
 }
