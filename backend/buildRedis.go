@@ -11,6 +11,7 @@ import (
 
 func buildRedis(dbQueries *database.Queries) error {
 	log.Println("starting redis build")
+
 	const leaderboardKey = "leaderboard"
 	const batchSize = 1000
 	redisClient := redisClient.Get()
