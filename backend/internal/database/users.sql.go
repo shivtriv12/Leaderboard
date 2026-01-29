@@ -7,7 +7,30 @@ package database
 
 import (
 	"context"
+
+	"github.com/lib/pq"
 )
+
+const batchUpdateUserScores = `-- name: BatchUpdateUserScores :exec
+UPDATE users
+SET ratings=updates.new_rating
+FROM(
+    SELECT
+        UNNEST($1::text[]) AS username,
+        UNNEST($2::int[]) AS new_rating
+) AS updates
+WHERE users.username=updates.username
+`
+
+type BatchUpdateUserScoresParams struct {
+	Column1 []string
+	Column2 []int32
+}
+
+func (q *Queries) BatchUpdateUserScores(ctx context.Context, arg BatchUpdateUserScoresParams) error {
+	_, err := q.db.ExecContext(ctx, batchUpdateUserScores, pq.Array(arg.Column1), pq.Array(arg.Column2))
+	return err
+}
 
 const createUser = `-- name: CreateUser :exec
 INSERT INTO users(id,username,ratings)
@@ -51,6 +74,36 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]GetAllUsersRow, error) {
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getRandomUsers = `-- name: GetRandomUsers :many
+SELECT username
+FROM users
+ORDER BY RANDOM()
+LIMIT $1
+`
+
+func (q *Queries) GetRandomUsers(ctx context.Context, limit int32) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getRandomUsers, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var username string
+		if err := rows.Scan(&username); err != nil {
+			return nil, err
+		}
+		items = append(items, username)
 	}
 	if err := rows.Close(); err != nil {
 		return nil, err

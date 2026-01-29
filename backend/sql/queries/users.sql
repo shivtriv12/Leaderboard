@@ -9,3 +9,19 @@ VALUES (
 -- name: GetAllUsers :many
 SELECT username,ratings
 FROM users;
+
+-- name: GetRandomUsers :many
+SELECT username
+FROM users
+ORDER BY RANDOM()
+LIMIT $1;
+
+-- name: BatchUpdateUserScores :exec
+UPDATE users
+SET ratings=updates.new_rating
+FROM(
+    SELECT
+        UNNEST($1::text[]) AS username,
+        UNNEST($2::int[]) AS new_rating
+) AS updates
+WHERE users.username=updates.username;
