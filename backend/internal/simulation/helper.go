@@ -26,14 +26,14 @@ func getRandomScore() int32 {
 	return int32(score)
 }
 
-func batchUpdateUserScores(dbOueries *database.Queries, users []string, ratings []int32) error {
-	return dbOueries.BatchUpdateUserScores(context.Background(), database.BatchUpdateUserScoresParams{
+func BatchUpdateUserRating(dbOueries *database.Queries, users []string, ratings []int32) error {
+	return dbOueries.BatchUpdateUserRating(context.Background(), database.BatchUpdateUserRatingParams{
 		Column1: users,
 		Column2: ratings,
 	})
 }
 
-func updateLeaderboardRedis(usernames []string, ratings []int32, redisClient *redis.Client) {
+func updateRedis(usernames []string, ratings []int32, redisClient *redis.Client) {
 	pipe := redisClient.Pipeline()
 
 	for i := range randomUsersSize {

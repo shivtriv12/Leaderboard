@@ -24,14 +24,14 @@ func UpdateUserRating(dbOueries *database.Queries, redisClient *redis.Client) {
 			ratings[i] = getRandomScore()
 		}
 
-		err = batchUpdateUserScores(dbOueries, users, ratings)
+		updateRedis(users, ratings, redisClient)
+		log.Println("user ratings updated in redis")
+
+		err = BatchUpdateUserRating(dbOueries, users, ratings)
 		if err != nil {
 			log.Printf("Error updating users score to db %v", err)
-			continue
+		} else {
+			log.Println("user ratings updated in db")
 		}
-		log.Println("user ratings updated in db")
-
-		updateLeaderboardRedis(users, ratings, redisClient)
-		log.Println("user ratings updated in redis")
 	}
 }

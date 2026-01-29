@@ -16,7 +16,7 @@ FROM users
 ORDER BY RANDOM()
 LIMIT $1;
 
--- name: BatchUpdateUserScores :exec
+-- name: BatchUpdateUserRating :exec
 UPDATE users
 SET ratings=updates.new_rating
 FROM(

@@ -26,9 +26,7 @@ I am creating a simulation worker which will run every 10 seconds, pick 1k rando
 
 ### Workflow
 
-1. Batch update in DB, followed by a Redis pipeline update.
-2. Since DB is the source of truth and Redis is eventually consistent, Redis can always be rebuilt from DB.
-3. Some future improvements to make the system more scalable:
-   - Exponential backoff for DB updates.
-   - Asynchronous Redis updates using a queue.
-   - Reconciliation logic for fixing inconsistencies.
+1. Currently Redis(pipeline)->db(batch), to make it more realtime.
+2. Source of truth is db only.
+3. In Production, redis first->async queue write to db.
+4. Reconciliation logic for fixing inconsistencies.

@@ -11,7 +11,7 @@ import (
 	"github.com/lib/pq"
 )
 
-const batchUpdateUserScores = `-- name: BatchUpdateUserScores :exec
+const batchUpdateUserRating = `-- name: BatchUpdateUserRating :exec
 UPDATE users
 SET ratings=updates.new_rating
 FROM(
@@ -22,13 +22,13 @@ FROM(
 WHERE users.username=updates.username
 `
 
-type BatchUpdateUserScoresParams struct {
+type BatchUpdateUserRatingParams struct {
 	Column1 []string
 	Column2 []int32
 }
 
-func (q *Queries) BatchUpdateUserScores(ctx context.Context, arg BatchUpdateUserScoresParams) error {
-	_, err := q.db.ExecContext(ctx, batchUpdateUserScores, pq.Array(arg.Column1), pq.Array(arg.Column2))
+func (q *Queries) BatchUpdateUserRating(ctx context.Context, arg BatchUpdateUserRatingParams) error {
+	_, err := q.db.ExecContext(ctx, batchUpdateUserRating, pq.Array(arg.Column1), pq.Array(arg.Column2))
 	return err
 }
 
