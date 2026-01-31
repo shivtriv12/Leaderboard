@@ -7,6 +7,7 @@ package database
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/lib/pq"
 )
@@ -104,6 +105,49 @@ func (q *Queries) GetRandomUsers(ctx context.Context, limit int32) ([]string, er
 			return nil, err
 		}
 		items = append(items, username)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getUsersByUsername = `-- name: GetUsersByUsername :many
+SELECT username,ratings
+FROM users
+WHERE username ILIKE '%' || $1 || '%'
+AND username>$2
+ORDER BY username
+LIMIT $3
+`
+
+type GetUsersByUsernameParams struct {
+	Column1  sql.NullString
+	Username string
+	Limit    int32
+}
+
+type GetUsersByUsernameRow struct {
+	Username string
+	Ratings  int32
+}
+
+func (q *Queries) GetUsersByUsername(ctx context.Context, arg GetUsersByUsernameParams) ([]GetUsersByUsernameRow, error) {
+	rows, err := q.db.QueryContext(ctx, getUsersByUsername, arg.Column1, arg.Username, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetUsersByUsernameRow
+	for rows.Next() {
+		var i GetUsersByUsernameRow
+		if err := rows.Scan(&i.Username, &i.Ratings); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
 	}
 	if err := rows.Close(); err != nil {
 		return nil, err

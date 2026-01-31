@@ -25,3 +25,11 @@ FROM(
         UNNEST($2::int[]) AS new_rating
 ) AS updates
 WHERE users.username=updates.username;
+
+-- name: GetUsersByUsername :many
+SELECT username,ratings
+FROM users
+WHERE username ILIKE '%' || $1 || '%'
+AND username>$2
+ORDER BY username
+LIMIT $3;

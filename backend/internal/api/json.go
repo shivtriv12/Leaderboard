@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func RespondWithJson(w http.ResponseWriter, code int, payload any) {
+func respondWithJson(w http.ResponseWriter, code int, payload any) {
 	w.Header().Set("Content-Type", "application/json")
 	data, err := json.Marshal(payload)
 	if err != nil {
@@ -18,7 +18,7 @@ func RespondWithJson(w http.ResponseWriter, code int, payload any) {
 	w.Write(data)
 }
 
-func RespondWithError(w http.ResponseWriter, code int, msg string, err error) {
+func respondWithError(w http.ResponseWriter, code int, msg string, err error) {
 	if err != nil {
 		log.Println(err)
 	}
@@ -28,7 +28,7 @@ func RespondWithError(w http.ResponseWriter, code int, msg string, err error) {
 	type errorResponse struct {
 		Error string `json:"error"`
 	}
-	RespondWithJson(w, code, errorResponse{
+	respondWithJson(w, code, errorResponse{
 		Error: msg,
 	})
 }

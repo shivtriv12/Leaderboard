@@ -14,6 +14,8 @@ type apiConfig struct {
 	RedisClient *redis.Client
 }
 
+const leaderboardKey = "leaderboard"
+
 func RegisterRouters(mux *http.ServeMux, dbQueries *database.Queries) {
 	apiCfg := apiConfig{
 		DBQueries:   dbQueries,
