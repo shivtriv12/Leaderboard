@@ -19,7 +19,7 @@ func (apiCfg *apiConfig) handlerLeaderboard(w http.ResponseWriter, r *http.Reque
 	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
 		if l, err := strconv.Atoi(limitStr); err == nil {
 			limit = l
-			if limit < 0 && limit >= 100 {
+			if limit < 0 && limit > 100 {
 				limit = 50
 			}
 		}
