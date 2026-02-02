@@ -6,10 +6,10 @@ interface TabProps{
 }
 
 export function Tabs({value,onChange}:TabProps){
-    return <div className="w-full rounded-2xl bg-surface p-1 flex">
+    return <div className="w-full rounded-2xl bg-surface p-1 flex hover:cursor-pointer">
         <button
             onClick={() => onChange("Leaderboard")}
-            className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all duration-200 ease-out
+            className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all duration-200 ease-out cursor-pointer
             ${
                 value === "Leaderboard"
                 ? "bg-accent text-background shadow-sm"
@@ -21,7 +21,7 @@ export function Tabs({value,onChange}:TabProps){
 
         <button
             onClick={() => onChange("Search")}
-            className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all duration-200 ease-out
+            className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all duration-200 ease-out cursor-pointer
             ${
                 value === "Search"
                 ? "bg-accent text-background shadow-sm"
