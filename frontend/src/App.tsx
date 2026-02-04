@@ -135,10 +135,16 @@ function App() {
             <button className="px-3 py-2 rounded-lg bg-surface cursor-pointer">
               ℹ
             </button>
-            <div className="absolute left-0 top-12 w-80 rounded-lg bg-surface p-3 text-sm text-text-secondary opacity-0 group-hover:opacity-100 transition pointer-events-none">
-              Scores are updated in the backend every 10 seconds for
-              ~1000 users. There are 10,000 users total (user_1 →
-              user_10000). Refresh to see rating changes.
+            <div className="absolute left-0 top-12 w-80 rounded-lg bg-surface p-4 text-sm text-text-secondary opacity-0 group-hover:opacity-100 transition pointer-events-none shadow-xl border border-border z-50">
+              <p className="mb-3">
+                Scores are updated in the backend every 10 seconds for ~1000
+                users. There are 10,000 users total (user_1 → user_10000).
+                Refresh to see rating changes.
+              </p>
+              <p className="text-yellow-500/80 text-xs font-medium bg-yellow-500/5 p-2 rounded">
+                Note: Deployed on Render Free Tier. Initial load may take up to 1
+                minute due to server cold start.
+              </p>
             </div>
           </div>
         </div>
