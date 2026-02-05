@@ -139,7 +139,6 @@ function App() {
               <p className="mb-3">
                 Scores are updated in the backend every 10 seconds for ~1000
                 users. There are 10,000 users total (user_1 → user_10000).
-                Refresh to see rating changes.
               </p>
               <p className="text-yellow-500/80 text-xs font-medium bg-yellow-500/5 p-2 rounded">
                 Note: Deployed on Render Free Tier. Initial load may take up to 1
